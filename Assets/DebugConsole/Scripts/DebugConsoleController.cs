@@ -37,6 +37,7 @@ public class DebugConsoleController : MonoBehaviour
 
     private void OnDestroy()
     {
+        StopAllCoroutines();
         Application.logMessageReceived -= ConsoleLog;
         _closeErrorBtn.onClick.RemoveListener(HideErrorPanel);
         _hideBtn.onClick.RemoveListener(HideConsole);
@@ -53,7 +54,9 @@ public class DebugConsoleController : MonoBehaviour
         if (type is LogType.Error)
             lic.onDisplayError += () => { DisplayError(logString, stackTrace); };
 
-        StartCoroutine(ScrollToBottom()); //need to wait a frame to update the scrollbar
+        // Keep the scroll bar at the bottom if it's already at the bottom
+        if (_scrollRect != null && _scrollRect.verticalNormalizedPosition <= 0.05f)
+            StartCoroutine(ScrollToBottom()); //need to wait a frame to update the scrollbar
 
         _even = !_even;
     }
@@ -97,7 +100,7 @@ public class DebugConsoleController : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         Canvas.ForceUpdateCanvases();
-        if (_scrollRect != null) _scrollRect.verticalNormalizedPosition = 0f;
+        _scrollRect.verticalNormalizedPosition = 0f;
         Canvas.ForceUpdateCanvases();
     }
 }
