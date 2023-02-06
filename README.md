@@ -11,5 +11,6 @@ Well done 👍
 
 ## Releases
 
+* **[1.2]** : Scrolling automatically to the bottom only if the scroll bar is already at the bottom
 * **[1.1]** : The console automatically scrolls to the bottom when a new log is added
 * **[1.0]** : On-screen console displaying log messages (log, logWarning & logError)
